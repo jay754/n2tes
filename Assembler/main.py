@@ -1,4 +1,3 @@
-# Predefined symbol table with initial values
 symbol_table = {
     "SP": 0, "LCL": 1, "ARG": 2, "THIS": 3, "THAT": 4,
     "R0": 0, "R1": 1, "R2": 2, "R3": 3, "R4": 4, "R5": 5, 
@@ -7,7 +6,6 @@ symbol_table = {
     "SCREEN": 16384, "KBD": 24576
 }
 
-# Function to parse A-instruction
 def parse_a_instruction(instruction, symbol_table, next_available_address):
     instruction = instruction.split("//")[0].strip()
     
@@ -26,9 +24,9 @@ def parse_a_instruction(instruction, symbol_table, next_available_address):
                 next_available_address += 1
 
             binary_value = format(address, '016b')
+            
             return binary_value, symbol_table, next_available_address
 
-# Function to parse C-instruction
 def parse_c_instruction(instruction):
     instruction = instruction.split("//")[0].strip()
 
@@ -61,9 +59,9 @@ def parse_c_instruction(instruction):
     jump_bin = jump_dict.get(jump, '000')
 
     binary_instruction = '111' + comp_bin + dest_bin + jump_bin
+    
     return binary_instruction
 
-# Combine A-instruction and C-instruction parsing
 def assemble(instructions, symbol_table):
     machine_code = []
     next_available_address = 16  # Start the address for new variables from 16
@@ -81,7 +79,6 @@ def assemble(instructions, symbol_table):
 
     return machine_code
 
-# Step 1: Read the assembly file
 def read_asm_file(file_path):
     with open(file_path, 'r') as file:
         instructions = []
@@ -94,23 +91,18 @@ def read_asm_file(file_path):
         
         return instructions
 
-# Step 2: Write the machine code to a .hack file
 def write_hack_file(output_path, machine_code):
     with open(output_path, 'w') as file:
         for code in machine_code:
             file.write(code + '\n')
 
-# Example usage
 assembly_file_path = 'Pong.asm'  
 hack_file_path = 'Pong.hack'
 
-# Step 1: Read the assembly code
 instructions = read_asm_file(assembly_file_path)
 
-# Step 2: Assemble the code into machine code
 machine_code = assemble(instructions, symbol_table)
 
-# Step 3: Write the machine code to the .hack file
 write_hack_file(hack_file_path, machine_code)
 
 print(f"Machine code written to {hack_file_path}")
